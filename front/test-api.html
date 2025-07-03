@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste API</title>
+</head>
+<body>
+    <h1>Teste da API de Clientes</h1>
+    <button onclick="testarCriarCliente()">Criar Cliente Teste</button>
+    <button onclick="testarListarClientes()">Listar Clientes</button>
+    <div id="resultado"></div>
+
+    <script>
+        async function testarCriarCliente() {
+            try {
+                const cliente = {
+                    nome: "Teste HTML",
+                    cpf: "123.123.123-12",
+                    rg: "12.123.123-1",
+                    telefone: "(11) 12345-6789"
+                };
+                
+                console.log('Enviando cliente:', cliente);
+                
+                const response = await fetch('/api/clientes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(cliente)
+                });
+                
+                console.log('Status da resposta:', response.status);
+                const data = await response.json();
+                console.log('Resposta:', data);
+                
+                document.getElementById('resultado').innerHTML = 
+                    '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                    
+            } catch (error) {
+                console.error('Erro:', error);
+                document.getElementById('resultado').innerHTML = 
+                    '<p style="color: red;">Erro: ' + error.message + '</p>';
+            }
+        }
+        
+        async function testarListarClientes() {
+            try {
+                const response = await fetch('/api/clientes');
+                const data = await response.json();
+                console.log('Clientes:', data);
+                
+                document.getElementById('resultado').innerHTML = 
+                    '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                    
+            } catch (error) {
+                console.error('Erro:', error);
+                document.getElementById('resultado').innerHTML = 
+                    '<p style="color: red;">Erro: ' + error.message + '</p>';
+            }
+        }
+    </script>
+</body>
+</html> 
